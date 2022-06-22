@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# you might need to modify your environment
+# before you can start 'openvscode-server'
+# Do it here.
+
+# example:
+# module purge
+# module load Stages/2022
+# module load OpenVSCode-Server/1.68.1
+
+openvscode-server "$@"

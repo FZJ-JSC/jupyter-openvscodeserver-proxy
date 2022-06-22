@@ -1,0 +1,2 @@
+graft jupyter_openvscodeserver_proxy/bin
+graft jupyter_openvscodeserver_proxy/icons
