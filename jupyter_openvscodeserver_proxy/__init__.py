@@ -44,14 +44,14 @@ def _openvscodeserver_urlparams():
     return url_params
 
 
-def _openvscodeserver_mappath(path):
-
-    # always pass the url parameter
-    if path in ('/', '/index.html', ):
-        url_params = _openvscodeserver_urlparams()
-        path = '/index.html' + url_params
-
-    return path
+# def _openvscodeserver_mappath(path):
+#
+#     # always pass the url parameter
+#     if path in ('/', '/index.html', ):
+#         url_params = _openvscodeserver_urlparams()
+#         path = '/index.html' + url_params
+# 
+#     return path
 
 
 def setup_openvscodeserver():
@@ -62,7 +62,7 @@ def setup_openvscodeserver():
     from random import choice
     from string import ascii_letters, digits
 
-    global _openvscodeserver_passwd, _openvscodeserver_aeskey
+    global _openvscodeserver_token
 
     # password generator
     def _get_random_alphanumeric_string(length):
@@ -83,23 +83,25 @@ def setup_openvscodeserver():
         raise FileNotFoundError("Token generation in temp file FAILED")
 
     # launchers url file including url parameters
-    path_info = 'openvscodeserver/index.html' + _openvscodeserver_urlparams()
+    path_info = 'openvscodeserver/' + _openvscodeserver_urlparams()
+    # logger.info('OpenVSCode-Server path-info: ' + path_info)
 
     # create command
     cmd = [
         get_openvscodeserver_executable('openvscode-server'),
-        # '--host <ip-address>',
-        '--port {port}',
-        # '--socket-path <path>',
-        # '--connection-token <token>',
-        '--connection-token-file {fpath_token}',
+        # '--host=<ip-address>',
+        '--port={port}',
+        # '--socket-path=<path>',
+        # '--connection-token=<token>',
+        '--connection-token-file={}'.format(fpath_token),
         # '--without-connection-token',
         '--accept-server-license-terms',
-        # '--server-data-dir <dir>',
+        # '--server-data-dir=<dir>',
         '--disable-telemetry',
-        # '--user-data-dir <dir>',
-        # '--extensions-dir <dir>',
-        # '--log <level>',
+        # '--default-folder=<dir',
+        # '--user-data-dir=<dir>',
+        # '--extensions-dir=<dir>',
+        # '--log=<level>',
     ]
     logger.info('OpenVSCode-Server command: ' + ' '.join(cmd))
 
@@ -113,7 +115,7 @@ def setup_openvscodeserver():
         'launcher_entry': {
             'enabled': True,
             'icon_path': os.path.join(HERE, 'icons/openvscode-server-logo.svg'),
-            'title': 'VS Code (OpenVSCode-Server)',
-            'path_info': path_info,
+            'title': 'VS Code (OpenVSCode)',
+            # 'path_info': path_info,
         },
     }

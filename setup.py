@@ -31,7 +31,7 @@ setup(
 
     entry_points={
         'jupyter_serverproxy_servers': [
-            'codeserver = jupyter_openvscodeserver_proxy:setup_openvscodeserver',
+            'openvscodeserver = jupyter_openvscodeserver_proxy:setup_openvscodeserver',
         ]
     },
     python_requires='>=3.6',
