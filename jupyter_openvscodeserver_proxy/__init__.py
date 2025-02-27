@@ -8,6 +8,13 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 global _openvscodeserver_token
 
+def get_system_user():
+    try:
+        user = pwd.getpwuid(os.getuid())[0]
+    except:
+        user = os.getenv('NB_USER', getpass.getuser())
+    return(user)
+
 def setup_openvscodeserver():
 
     # return path to openvscode executable
