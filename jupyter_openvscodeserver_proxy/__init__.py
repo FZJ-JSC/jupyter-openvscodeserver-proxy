@@ -20,7 +20,6 @@ def get_system_user():
         user = os.getenv('NB_USER', getpass.getuser())
     return(user)
 
-
 def setup_openvscodeserver():
 
     # return path to openvscode executable
@@ -64,7 +63,7 @@ def setup_openvscodeserver():
         return url_params
 
     # return command
-    def _get_cmd(port):
+    def _get_cmd(port, unix_socket):
 
         # generate file with random one-time-token
         from tempfile import mkstemp
@@ -82,20 +81,21 @@ def setup_openvscodeserver():
         cmd = [
             _get_executable('openvscode-server'),
             # '--host=<ip-address>',
-            '--port={port}',
-            # '--socket-path=<path>',
             '--server-base-path={}'.format(_get_urlprefix()),
-            # '--connection-token=<token>',
             '--connection-token-file={}'.format(fpath_token),
-            # '--without-connection-token',
             '--accept-server-license-terms',
-            # '--server-data-dir=<dir>',
             '--disable-telemetry',
-            # '--default-folder=<dir',
+            # '--default-folder=<dir>',
+            # '--server-data-dir=<dir>',
             # '--user-data-dir=<dir>',
             # '--extensions-dir=<dir>',
             # '--log=<level>',
         ]
+        if unix_socket != "":
+            cmd.append('--socket-path={unix_socket}')
+        else:
+            cmd.append('--port={port}')
+
         logger.info('OpenVSCode-Server command: ' + ' '.join(cmd))
         return cmd
 
@@ -137,5 +137,14 @@ def setup_openvscodeserver():
             'path_info': _get_pathinfo(),
         }
     }
+
+    use_socket = os.getenv('JUPYTER_OPENVSCODE_PROXY_USE_SOCKET')
+    if use_socket is not None:
+        # If this env var is anything other than case insensitive 'no' or 'false',
+        # use unix sockets instead of tcp sockets. This allows us to default to
+        # using unix sockets by default in the future once this feature is better
+        # tested, and allow people to turn it off if needed.
+        if use_socket.casefold() not in ('no', 'false'):
+            server_process['unix_socket'] = True
 
     return server_process
