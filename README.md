@@ -4,11 +4,6 @@
 Integrate [OpenVSCode-Server](https://github.com/gitpod-io/openvscode-server) in your Jupyter environment for an fast, feature-rich and easy to use remote desktop in the browser.
 
 --------------------------------
-**ATTENTION - NOT functional!**  
-jupyter-openvscodeserver-proxy requires a missing feature in VSCode/OpenVSCode to function.  
-If you want to help, please support the following feature request: https://github.com/microsoft/vscode/issues/153679  
-
---------------------------------
 
 ![Jupyter-openvscodeserver-proxy example](docs/screenshot.png 'Jupyter-openvscodeserver-proxy example')
 
@@ -16,7 +11,7 @@ If you want to help, please support the following feature request: https://githu
 - Python 3.6+
 - Jupyter Notebook 6.0+
 - JupyterLab >= 3.x
-- jupyter-server-proxy >= 3.1.0
+- jupyter-server-proxy >= 3.2.3
 
 This package executes the `openvscode-server` command.  
 It tries to find the `openvscode-server` executable checking the following:  
