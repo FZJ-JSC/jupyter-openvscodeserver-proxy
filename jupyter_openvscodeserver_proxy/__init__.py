@@ -88,7 +88,7 @@ def setup_openvscodeserver():
 
         # create command
         cmd = [
-            get_executable('openvscode-server'),
+            _get_executable('openvscode-server'),
             # '--host=<ip-address>',
             '--port={port}',
             # '--socket-path=<path>',
