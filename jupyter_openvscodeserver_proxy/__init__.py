@@ -123,12 +123,15 @@ def setup_openvscodeserver():
 
     # return icon path
     def _get_iconpath():
-        return os.path.join(HERE, 'icons/openvscode-server-logo.svg'),
+        icon_path = os.path.join(HERE, 'icons/openvscode-server-logo.svg')
+        logger.info('OpenVSCode-Server icon-path: ' + icon_path)
+        return icon_path
 
     # return path info = launchers url file including url parameters
     def _get_pathinfo():
         path_info = 'openvscodeserver/' + _get_urlparams()
         logger.info('OpenVSCode-Server path-info: ' + path_info)
+        return path_info
 
     server_process = {
         'command': _get_cmd,
@@ -139,7 +142,7 @@ def setup_openvscodeserver():
         'launcher_entry': {
             'enabled': True,
             'title': 'VS Code (OpenVSCode)',
-            'icon_path': _get_iconpath()
+            'icon_path': _get_iconpath(),
             # 'path_info': _get_pathinfo,
         }
     }
