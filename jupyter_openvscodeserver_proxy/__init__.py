@@ -63,11 +63,6 @@ def setup_openvscodeserver():
         ])
         return url_params
 
-    # return the map path
-    def _get_mappath(path):
-        map_path = _get_urlparams()
-        return map_path
-
     # return command
     def _get_cmd(port):
 
@@ -76,8 +71,6 @@ def setup_openvscodeserver():
         global _openvscodeserver_token
         try:
             fd_token, fpath_token = mkstemp()
-            logger.info('Created secure token file for openvscode-server: ' + fpath_token)
-
             with open(fd_token, 'w') as f:
                 f.write(_openvscodeserver_token)
 
@@ -120,13 +113,11 @@ def setup_openvscodeserver():
     # return icon path
     def _get_iconpath():
         icon_path = os.path.join(HERE, 'icons/openvscode-server-logo.svg')
-        logger.info('OpenVSCode-Server icon-path: ' + icon_path)
         return icon_path
 
     # return path info = launchers url file including url parameters
     def _get_pathinfo():
-        path_info = 'openvscodeserver/' + _get_urlparams()
-        logger.info('OpenVSCode-Server path-info: ' + path_info)
+        path_info = 'openvscodeserver' + _get_urlparams()
         return path_info
 
     # create random token
@@ -138,13 +129,12 @@ def setup_openvscodeserver():
         'command': _get_cmd,
         'timeout': _get_timeout(),
         'environment': _get_env,
-        'mappath': _get_mappath,
         'new_browser_tab': True,
         'launcher_entry': {
             'enabled': True,
             'title': 'VSCode (OpenVSCode)',
             'icon_path': _get_iconpath(),
-            # 'path_info': _get_pathinfo,
+            'path_info': _get_pathinfo(),
         }
     }
 
