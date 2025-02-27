@@ -3,6 +3,9 @@ import logging
 import pwd
 import getpass
 
+from random import choice
+from string import ascii_letters, digits
+
 logger = logging.getLogger(__name__)
 logger.setLevel('INFO')
 
@@ -61,24 +64,16 @@ def setup_openvscodeserver():
         return url_params
 
     # return the map path
-    # def _get_mappath(path):
-    #     # always pass the url parameter
-    #     if path in ('/', '/index.html', ):
-    #         path = '/index.html' + _get_urlparams()
-    #     return path
+    def _get_mappath(path):
+        map_path = _get_urlparams()
+        return map_path
 
     # return command
     def _get_cmd(port):
 
         # generate file with random one-time-token
         from tempfile import mkstemp
-        from random import choice
-        from string import ascii_letters, digits
-
         global _openvscodeserver_token
-        letters_and_digits = ascii_letters + digits
-        _openvscodeserver_token = (''.join((choice(letters_and_digits) for i in range(16))))
-
         try:
             fd_token, fpath_token = mkstemp()
             logger.info('Created secure token file for openvscode-server: ' + fpath_token)
@@ -109,6 +104,7 @@ def setup_openvscodeserver():
             # '--log=<level>',
         ]
         logger.info('OpenVSCode-Server command: ' + ' '.join(cmd))
+        return cmd
 
     # return timeout
     def _get_timeout(default=60):
@@ -133,15 +129,20 @@ def setup_openvscodeserver():
         logger.info('OpenVSCode-Server path-info: ' + path_info)
         return path_info
 
+    # create random token
+    global _openvscodeserver_token
+    letters_and_digits = ascii_letters + digits
+    _openvscodeserver_token = (''.join((choice(letters_and_digits) for i in range(16))))
+
     server_process = {
         'command': _get_cmd,
         'timeout': _get_timeout(),
         'environment': _get_env,
-        # 'mappath': _get_mappath,
+        'mappath': _get_mappath,
         'new_browser_tab': True,
         'launcher_entry': {
             'enabled': True,
-            'title': 'VS Code (OpenVSCode)',
+            'title': 'VSCode (OpenVSCode)',
             'icon_path': _get_iconpath(),
             # 'path_info': _get_pathinfo,
         }
