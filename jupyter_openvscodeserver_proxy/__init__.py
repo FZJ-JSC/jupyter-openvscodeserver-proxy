@@ -15,6 +15,7 @@ def get_system_user():
         user = os.getenv('NB_USER', getpass.getuser())
     return(user)
 
+
 def setup_openvscodeserver():
 
     # return path to openvscode executable
