@@ -12,6 +12,7 @@ Integrate [OpenVSCode-Server](https://github.com/gitpod-io/openvscode-server) in
 - Jupyter Notebook 6.0+
 - JupyterLab >= 3.x
 - jupyter-server-proxy >= 3.2.3
+- OpenVSCode-server >= 1.98.0
 
 This package executes the `openvscode-server` command.  
 It tries to find the `openvscode-server` executable checking the following:  
