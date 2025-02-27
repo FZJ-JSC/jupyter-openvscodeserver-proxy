@@ -8,7 +8,7 @@ logger.setLevel('INFO')
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-global _openvscodeserver_token
+_openvscodeserver_token = None
 
 def get_system_user():
     try:
@@ -54,6 +54,7 @@ def setup_openvscodeserver():
 
     # return url parameters
     def _get_urlparams():
+        global _openvscodeserver_token
         url_params = '?' + '&'.join([
             'tkn=' + _openvscodeserver_token,
         ])
@@ -74,15 +75,16 @@ def setup_openvscodeserver():
         from random import choice
         from string import ascii_letters, digits
 
+        global _openvscodeserver_token
         letters_and_digits = ascii_letters + digits
-        token = (''.join((choice(letters_and_digits) for i in range(length))))
+        _openvscodeserver_token = (''.join((choice(letters_and_digits) for i in range(16))))
 
         try:
             fd_token, fpath_token = mkstemp()
             logger.info('Created secure token file for openvscode-server: ' + fpath_token)
 
             with open(fd_token, 'w') as f:
-                f.write(token)
+                f.write(_openvscodeserver_token)
 
         except Exception:
             logger.error("Token generation in temp file FAILED")
