@@ -25,20 +25,20 @@ It tries to find the `openvscode-server` executable checking the following:
 ## Configuration
 The jupyter-openvscodeserver-proxy can be configures via the following environment variables
 
-- JUPYTER_OPENVSCODE_PROXY_TIMEOUT = <int> in seconds, default=60
-    Specifies how long jupyter-openvscodeserver-proxy shall wait for the OpenVSCode-Server to startup until it gives up.
-- JUPYTER_OPENVSCODE_PROXY_USE_SOCKET = <TRUE|FALSE>, default=FALSE
-    Use unix sockets for highest security standards.
-- JUPYTER_OPENVSCODE_PROXY_DEFAULT_FOLDER = <path>, default=current working directory
-    The workspace folder to open when no input is specified in the browser URL. A relative or absolute path resolved against the current working directory.
+- `JUPYTER_OPENVSCODE_PROXY_TIMEOUT` = `<int>` , default = 60
+    - Specifies how long jupyter-openvscodeserver-proxy shall wait for the OpenVSCode-Server to startup until it gives up.
+- `JUPYTER_OPENVSCODE_PROXY_USE_SOCKET` = `'FALSE' | 'TRUE'` ,  default = `FALSE`
+    - Use unix sockets for highest security standards.
+- `JUPYTER_OPENVSCODE_PROXY_DEFAULT_FOLDER` = `<path>`, default=current working directory
+    - The workspace folder to open when no input is specified in the browser URL. A relative or absolute path resolved against the current working directory.
 
 ### VSCode options
-- JUPYTER_OPENVSCODE_PROXY_SERVER_DATA_DIR = <path>
-    Specifies the directory that server data is kept in. If not set the default is used.
-- JUPYTER_OPENVSCODE_PROXY_USER_DATA_DIR = <path>
-    Specifies the directory that user data is kept in. If not set the default is used.
-- JUPYTER_OPENVSCODE_PROXY_EXTENSIONS_DIR = <path>
-    Specifies the directory that extensions are kept in. If not set the default is used.
+- `JUPYTER_OPENVSCODE_PROXY_SERVER_DATA_DIR` = `<path>`
+    - Specifies the directory that server data is kept in. If not set the default is used.
+- `JUPYTER_OPENVSCODE_PROXY_USER_DATA_DIR` = `<path>`
+    - Specifies the directory that user data is kept in. If not set the default is used.
+- `JUPYTER_OPENVSCODE_PROXY_EXTENSIONS_DIR` = `<path>`
+    - Specifies the directory that extensions are kept in. If not set the default is used.
 
 ## Install 
 
@@ -66,16 +66,14 @@ jupyter lab build
 ```
 
 #### Start Jupyter Classic or Jupyter Lab
-Click on the code-server icon from the Jupyter Lab Launcher or the openvscode-server item from the New dropdown in Jupyter Classic.  
+Click on the openvscode-server icon from the Jupyter Lab Launcher or the openvscode-server item from the New dropdown in Jupyter Classic.  
 Connect to your database as instructed in the Quickstart section.
 
-## Configuration
 This package calls `openvscode-server` with a bunch of settings.  
-You have to modify `setup_openvscodeserver()` in `jupyter_openvscodeserver_proxy/__init__.py` for change.
 
 ## Credits
 - [openvscode-server](https://github.com/gitpod-io/openvscode-server) 
-- jupyter-server-proxy
+- [jupyter-server-proxy](https://github.com/jupyterhub/jupyter-server-proxy)
 
 ## License
 BSD 3-Clause

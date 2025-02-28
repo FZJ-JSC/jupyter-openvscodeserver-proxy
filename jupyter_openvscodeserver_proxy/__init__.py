@@ -69,6 +69,7 @@ def setup_openvscodeserver():
                 raise ValueError("Could not extract version number")
 
             major, minor = map(int, match.groups())
+            # logger.info(f'Found OpenVSCoder-Server in version {major}.{minor}')
             return (major > major_min) or (major == major_min and minor >= minor_min)
 
         except (subprocess.CalledProcessError, IndexError, ValueError) as e:
@@ -126,9 +127,9 @@ def setup_openvscodeserver():
             )
 
         # check if settig a base-path is supported
-        if not supported_args['socket-base-path']:
+        if not supported_args['server-base-path']:
             raise NotImplementedError(
-                'OpenVSCode Server does not support --socket-base-path, which is crucial.'
+                'OpenVSCode Server does not support --server-base-path, which is crucial.'
             )
 
         # create command
