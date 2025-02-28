@@ -22,6 +22,24 @@ It tries to find the `openvscode-server` executable checking the following:
 - 4. special locations:
      - `/opt/openvscode-server/bin/openvscode-server`
 
+## Configuration
+The jupyter-openvscodeserver-proxy can be configures via the following environment variables
+
+- JUPYTER_OPENVSCODE_PROXY_TIMEOUT = <int> in seconds, default=60
+    Specifies how long jupyter-openvscodeserver-proxy shall wait for the OpenVSCode-Server to startup until it gives up.
+- JUPYTER_OPENVSCODE_PROXY_USE_SOCKET = <TRUE|FALSE>, default=FALSE
+    Use unix sockets for highest security standards.
+- JUPYTER_OPENVSCODE_PROXY_DEFAULT_FOLDER = <path>, default=current working directory
+    The workspace folder to open when no input is specified in the browser URL. A relative or absolute path resolved against the current working directory.
+
+### VSCode options
+- JUPYTER_OPENVSCODE_PROXY_SERVER_DATA_DIR = <path>
+    Specifies the directory that server data is kept in. If not set the default is used.
+- JUPYTER_OPENVSCODE_PROXY_USER_DATA_DIR = <path>
+    Specifies the directory that user data is kept in. If not set the default is used.
+- JUPYTER_OPENVSCODE_PROXY_EXTENSIONS_DIR = <path>
+    Specifies the directory that extensions are kept in. If not set the default is used.
+
 ## Install 
 
 #### Create and Activate Environment

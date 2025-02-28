@@ -49,6 +49,33 @@ def setup_openvscodeserver():
 
         raise FileNotFoundError(f'Could not find {prog} in PATH')
 
+    # return supported arguments
+    def _support_args(args):
+        ret = subprocess.check_output([_get_executable('openvscode-server'), '--help'])
+        help_output = ret.decode()
+        return {arg: (help_output.find(f"--{arg}") != -1) for arg in args}
+
+    # check the version number
+    def _is_version_supported(major_min, minor_min):
+        import subprocess
+        import re
+
+        try:
+            ret = subprocess.check_output([_get_executable('openvscode-server'), '--version'])
+            help_output = ret.decode()
+
+            version_line = result.stdout.splitlines()[0]
+            match = re.match(r"(\d+)\.(\d+)", version_line)
+            if not match:
+                raise ValueError("Could not extract version number")
+
+            major, minor = map(int, match.groups())
+            return (major > major_min) or (major == major_min and minor >= minor_min)
+
+        except (subprocess.CalledProcessError, IndexError, ValueError) as e:
+            logger.error(f"Error checking version: {e}")
+            return False
+
     # return url prefix
     def _get_urlprefix():
         url_prefix = os.environ.get('JUPYTERHUB_SERVICE_PREFIX')
@@ -77,6 +104,34 @@ def setup_openvscodeserver():
             logger.error("Token generation in temp file FAILED")
             raise FileNotFoundError("Token generation in temp file FAILED")
 
+        # check for supported arguments
+        supported_args = _support_args([
+            'version',
+            'socket-path',
+            'server-base-path',
+            'default-folder',
+            'server-data-dir',
+            'user-data-dir',
+            'extensions-dir',
+        ])
+
+        # check the version
+        if supported_args['version']:
+            if not _is_version_supported(1, 98):
+                raise NotImplementedError(
+                    'OpenVSCode-Server is not installed in the required version of >= 1.98'
+                )
+        else:
+            raise NotImplementedError(
+                'Checking the version number of OpenVSCode-Server failed'
+            )
+
+        # check if settig a base-path is supported
+        if not supported_args['socket-base-path']:
+            raise NotImplementedError(
+                'OpenVSCode Server does not support --socket-base-path, which is crucial.'
+            )
+
         # create command
         cmd = [
             _get_executable('openvscode-server'),
@@ -85,16 +140,36 @@ def setup_openvscodeserver():
             '--connection-token-file={}'.format(fpath_token),
             '--accept-server-license-terms',
             '--disable-telemetry',
-            # '--default-folder=<dir>',
-            # '--server-data-dir=<dir>',
-            # '--user-data-dir=<dir>',
-            # '--extensions-dir=<dir>',
             # '--log=<level>',
         ]
+
         if unix_socket != "":
-            cmd.append('--socket-path={unix_socket}')
+            if supported_args['socket-path']:
+                cmd.append('--socket-path={unix_socket}')
+            else:
+                raise NotImplementedError(f'openvscode-server does not support requested socket connection')
         else:
             cmd.append('--port={port}')
+
+        if supported_args['default-folder']:
+            default_folder = os.getenv('JUPYTER_OPENVSCODE_PROXY_DEFAULT_FOLDER', None)
+            if default_folder is not None:
+                cmd.append('--default-folder=' + str(default_folder))
+
+        if supported_args['server-data-dir']:
+            server_data_dir = os.getenv('JUPYTER_OPENVSCODE_PROXY_SERVER_DATA_DIR', None)
+            if server_data_dir is not None:
+                cmd.append('--server-data-dir=' + str(server_data_dir))
+
+        if supported_args['user-data-dir']:
+            user_data_dir = os.getenv('JUPYTER_OPENVSCODE_PROXY_USER_DATA_DIR', None)
+            if user_data_dir is not None:
+                cmd.append('--user-data-dir=' + str(user_data_dir))
+
+        if supported_args['extensions-dir']:
+            extensions_dir = os.getenv('JUPYTER_OPENVSCODE_PROXY_EXTENSIONS_DIR', None)
+            if extensions_dir is not None:
+                cmd.append('--extensions-dir=' + str(extensions_dir))
 
         logger.info('OpenVSCode-Server command: ' + ' '.join(cmd))
         return cmd
