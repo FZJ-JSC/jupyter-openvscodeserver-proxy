@@ -3,6 +3,9 @@ import logging
 import pwd
 import getpass
 
+import subprocess
+import re
+
 from random import choice
 from string import ascii_letters, digits
 
@@ -57,9 +60,6 @@ def setup_openvscodeserver():
 
     # check the version number
     def _is_version_supported(major_min, minor_min):
-        import subprocess
-        import re
-
         try:
             ret = subprocess.check_output([_get_executable('openvscode-server'), '--version'])
             help_output = ret.decode()
