@@ -62,9 +62,8 @@ def setup_openvscodeserver():
     def _is_version_supported(major_min, minor_min):
         try:
             ret = subprocess.check_output([_get_executable('openvscode-server'), '--version'])
-            help_output = ret.decode()
+            version_line = ret.decode().splitlines()[0]
 
-            version_line = result.stdout.splitlines()[0]
             match = re.match(r"(\d+)\.(\d+)", version_line)
             if not match:
                 raise ValueError("Could not extract version number")
