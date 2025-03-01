@@ -14,6 +14,7 @@ Integrate [OpenVSCode-Server](https://github.com/gitpod-io/openvscode-server) in
 - jupyter-server-proxy >= 3.2.3
 - OpenVSCode-server >= 1.98.0
 
+## Configuration
 This package executes the `openvscode-server` command.  
 It tries to find the `openvscode-server` executable checking the following:  
 - 1. environment variable $OPENVSCODESERVER_BIN
@@ -22,15 +23,15 @@ It tries to find the `openvscode-server` executable checking the following:
 - 4. special locations:
      - `/opt/openvscode-server/bin/openvscode-server`
 
-## Configuration
 The jupyter-openvscodeserver-proxy can be configures via the following environment variables
 
 - `JUPYTER_OPENVSCODE_PROXY_TIMEOUT` = `<int>` , default = 60
     - Specifies how long jupyter-openvscodeserver-proxy shall wait for the OpenVSCode-Server to startup until it gives up.
 - `JUPYTER_OPENVSCODE_PROXY_USE_SOCKET` = `'FALSE' | 'TRUE'` ,  default = `FALSE`
     - Use unix sockets for highest security standards.
+- `JUPYTER_OPENVSCODE_PROXY_DEBUG` = `'FALSE' | 'TRUE'` ,  default = `FALSE`
+    - Enable to print some log messages to stderr.
 
-### VSCode options
 - `JUPYTER_OPENVSCODE_PROXY_SERVER_DATA_DIR` = `<path>`
     - Specifies the directory that server data is kept in. If not set the default is used.
 - `JUPYTER_OPENVSCODE_PROXY_USER_DATA_DIR` = `<path>`

@@ -9,8 +9,19 @@ import re
 from random import choice
 from string import ascii_letters, digits
 
+import sys
+
 logger = logging.getLogger(__name__)
-logger.setLevel('INFO')
+logger.setLevel(logging.DEBUG)
+
+log_debug = os.getenv('JUPYTER_OPENVSCODE_PROXY_DEBUG')
+if log_debug is not None:
+    if log_debug.casefold() not in ('no', 'false'):
+        handler = logging.StreamHandler(sys.stderr)
+        handler.setLevel(logging.DEBUG)
+        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -69,7 +80,7 @@ def setup_openvscodeserver():
                 raise ValueError("Could not extract version number")
 
             major, minor = map(int, match.groups())
-            # logger.info(f'Found OpenVSCoder-Server in version {major}.{minor}')
+            logger.debug(f'Found OpenVSCoder-Server in version {major}.{minor}')
             return (major > major_min) or (major == major_min and minor >= minor_min)
 
         except (subprocess.CalledProcessError, IndexError, ValueError) as e:
@@ -165,7 +176,7 @@ def setup_openvscodeserver():
             if extensions_dir is not None:
                 cmd.append('--extensions-dir=' + str(extensions_dir))
 
-        logger.info('OpenVSCode-Server command: ' + ' '.join(cmd))
+        logger.debug('OpenVSCode-Server command: ' + ' '.join(cmd))
         return cmd
 
     # return timeout
@@ -215,5 +226,6 @@ def setup_openvscodeserver():
         # tested, and allow people to turn it off if needed.
         if use_socket.casefold() not in ('no', 'false'):
             server_process['unix_socket'] = True
+            logger.debug('OpenVSCode-Server uses unix-sockets')
 
     return server_process
