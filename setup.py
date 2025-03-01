@@ -5,14 +5,14 @@ HERE = path.abspath(path.dirname(__file__))
 with open(path.join(HERE, 'README.md'), 'r', encoding='utf-8') as fh:
     long_description = fh.read()
 
-version = '0.9.0'
+version = '0.9.1'
 setup(
     name='jupyter-openvscodeserver-proxy',
     version=version,
     packages=find_packages(),
 
     url='https://github.com/FZJ-JSC/jupyter-openvscodeserver-proxy',
-    download_url='https://github.com/FZJ-JSC/jupyter-openvscodeserver-proxy/archive/v{0}.tar.gz'.format(version),
+    download_url='https://github.com/FZJ-JSC/jupyter-openvscodeserver-proxy/archive/refs/tags/v{0}.tar.gz'.format(version),
 
     author='Jens Henrik Goebbert',
     author_email='j.goebbert@fz-juelich.de',
