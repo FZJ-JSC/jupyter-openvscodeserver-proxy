@@ -127,7 +127,7 @@ def setup_openvscodeserver():
 
         # check the version
         if supported_args['version']:
-            if not _is_version_supported(1, 98):
+            if not _is_version_supported(1, 97):
                 raise NotImplementedError(
                     'OpenVSCode-Server is not installed in the required version of >= 1.98'
                 )
