@@ -29,8 +29,6 @@ The jupyter-openvscodeserver-proxy can be configures via the following environme
     - Specifies how long jupyter-openvscodeserver-proxy shall wait for the OpenVSCode-Server to startup until it gives up.
 - `JUPYTER_OPENVSCODE_PROXY_USE_SOCKET` = `'FALSE' | 'TRUE'` ,  default = `FALSE`
     - Use unix sockets for highest security standards.
-- `JUPYTER_OPENVSCODE_PROXY_DEFAULT_FOLDER` = `<path>`, default=current working directory
-    - The workspace folder to open when no input is specified in the browser URL. A relative or absolute path resolved against the current working directory.
 
 ### VSCode options
 - `JUPYTER_OPENVSCODE_PROXY_SERVER_DATA_DIR` = `<path>`

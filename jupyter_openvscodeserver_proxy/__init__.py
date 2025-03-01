@@ -109,7 +109,6 @@ def setup_openvscodeserver():
             'version',
             'socket-path',
             'server-base-path',
-            'default-folder',
             'server-data-dir',
             'user-data-dir',
             'extensions-dir',
@@ -150,11 +149,6 @@ def setup_openvscodeserver():
                 raise NotImplementedError(f'openvscode-server does not support requested socket connection')
         else:
             cmd.append('--port={port}')
-
-        if supported_args['default-folder']:
-            default_folder = os.getenv('JUPYTER_OPENVSCODE_PROXY_DEFAULT_FOLDER', None)
-            if default_folder is not None:
-                cmd.append('--default-folder=' + str(default_folder))
 
         if supported_args['server-data-dir']:
             server_data_dir = os.getenv('JUPYTER_OPENVSCODE_PROXY_SERVER_DATA_DIR', None)
