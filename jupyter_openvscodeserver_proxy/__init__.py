@@ -19,7 +19,7 @@ if log_debug is not None:
     if log_debug.casefold() not in ('no', 'false'):
         handler = logging.StreamHandler(sys.stderr)
         handler.setLevel(logging.DEBUG)
-        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        formatter = logging.Formatter("[D %(asctime)s %(name)s] %(message)s")
         handler.setFormatter(formatter)
         logger.addHandler(handler)
 
@@ -92,14 +92,6 @@ def setup_openvscodeserver():
         url_prefix = os.environ.get('JUPYTERHUB_SERVICE_PREFIX')
         return url_prefix
 
-    # return url parameters
-    def _get_urlparams():
-        global _openvscodeserver_token
-        url_params = '?' + '&'.join([
-            'tkn=' + _openvscodeserver_token,
-        ])
-        return url_params
-
     # return command
     def _get_cmd(port, unix_socket):
 
@@ -129,7 +121,7 @@ def setup_openvscodeserver():
         if supported_args['version']:
             if not _is_version_supported(1, 97):
                 raise NotImplementedError(
-                    'OpenVSCode-Server is not installed in the required version of >= 1.98'
+                    'OpenVSCode-Server is not installed in the required version of >= 1.97'
                 )
         else:
             raise NotImplementedError(
@@ -197,7 +189,16 @@ def setup_openvscodeserver():
 
     # return path info = launchers url file including url parameters
     def _get_pathinfo():
-        path_info = 'openvscodeserver' + _get_urlparams()
+        global _openvscodeserver_token
+        params = ['tkn=' + _openvscodeserver_token]
+
+        default_folder = os.getenv('JUPYTER_OPENVSCODE_PROXY_DEFAULT_FOLDER', None)
+        if default_folder is not None:
+            params.append(f'folder={default_folder}')
+
+        url_params = '?' + '&'.join(params)
+
+        path_info = 'openvscodeserver' + url_params
         return path_info
 
     # create random token

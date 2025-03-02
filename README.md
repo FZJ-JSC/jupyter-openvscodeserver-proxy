@@ -31,6 +31,8 @@ The jupyter-openvscodeserver-proxy can be configures via the following environme
     - Use unix sockets for highest security standards.
 - `JUPYTER_OPENVSCODE_PROXY_DEBUG` = `'FALSE' | 'TRUE'` ,  default = `FALSE`
     - Enable to print some log messages to stderr.
+- `JUPYTER_OPENVSCODE_PROXY_DEFAULT_FOLDER` = `<path>`, default = None
+    - Specifies the directory that OpenVSCode will use as default folder.
 
 - `JUPYTER_OPENVSCODE_PROXY_SERVER_DATA_DIR` = `<path>`
     - Specifies the directory that server data is kept in. If not set the default is used.
